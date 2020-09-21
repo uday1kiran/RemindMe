@@ -21,7 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('signup/',views.signupuser,name='signupuser'),
     path('logout/',views.logoutuser,name='logoutuser'),
-path('login/',views.loginuser,name='loginuser'),
+    path('login/',views.loginuser,name='loginuser'),
     path('current/',views.currentreminders,name='currentreminders'),
-    path('',views.home,name='home')
+    path('',views.home,name='home'),
+
+path('create/',views.createreminder,name='createreminder'),
 ]

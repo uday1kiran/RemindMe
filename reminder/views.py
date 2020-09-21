@@ -3,7 +3,8 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import login, logout, authenticate
-
+from .forms import ReminderForm
+from .models import Reminder
 
 # Create your views here.
 def signupuser(request):
@@ -44,4 +45,19 @@ def home(request):
     return render(request,'reminder/home.html')
 
 def currentreminders(request):
-    return render(request,'reminder/currentreminders.html')
+    #reminders = Reminder.objects.all()
+    reminders = Reminder.objects.filter(user=request.user, datecompleted__isnull=True)
+    return render(request,'reminder/currentreminders.html',{'reminders':reminders})
+
+def createreminder(request):
+    if request.method == 'GET':
+        return render(request, 'reminder/createreminder.html',{'form':ReminderForm()})
+    else:
+        try:
+            form = ReminderForm(request.POST)
+            newreminder = form.save(commit=False)
+            newreminder.user = request.user
+            newreminder.save()
+            return redirect('currentreminders')
+        except ValueError:
+            return render(request, 'reminder/createreminder.html', {'form': ReminderForm(),'error':'bad data passed in. Try again.'})

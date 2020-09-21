@@ -3,4 +3,21 @@
 {% block content %}
     Current
 
+    <ul>
+    {% for reminder in reminders %}
+         <li>
+             {% if reminder.important %}
+                 <b>
+             {% endif %}
+             {{ reminder.title }}
+             {% if reminder.important %}
+                 </b>
+             {% endif %}
+             {% if reminder.memo %}
+                 - {{ reminder.memo }}
+             {% endif %}
+         </li>
+    {% endfor %}
+    </ul>>
+
 {%  endblock %}
